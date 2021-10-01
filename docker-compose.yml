@@ -68,12 +68,10 @@ services:
       - ./mysql:/docker-entrypoint-initdb.d
   minio:
     image: minio/minio:latest
-    entrypoint: sh
-    command: -c 'mkdir -p /data/sql-training && /usr/bin/minio server /data'
+    command: server /data --console-address ":9001"
     environment:
-      - MINIO_ACCESS_KEY=flink-sql
-      - MINIO_SECRET_KEY=flink-sql
-    expose:
-      - "9000"
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
     ports:
       - "9000:9000"
+      - "9001:9001"
