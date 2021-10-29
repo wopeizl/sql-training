@@ -15,7 +15,7 @@ services:
       KAFKA_BOOTSTRAP: kafka
       MYSQL_HOST: mysql
   jobmanager:
-    image: fhueske/flink-sql-training-flink-s3:1.11.1-scala_2.11
+    image: fhueske/flink-sql-training-flink-s3:1.11.3-scala_2.11
     build: ./images/flink-image
     hostname: "jobmanager"
     expose:
@@ -26,7 +26,7 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
   taskmanager:
-    image: fhueske/flink-sql-training-flink-s3:1.11.1-scala_2.11
+    image: fhueske/flink-sql-training-flink-s3:1.11.3-scala_2.11
     build: ./images/flink-image
     expose:
       - "6121"
