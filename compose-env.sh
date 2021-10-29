@@ -3,7 +3,7 @@ CONTAINERS=$(docker-compose ps|tail -n +3|awk '{print $1}')
 for i in $CONTAINERS
 do
 # echo $i
-  IPADDR=$(docker inspect $i|grep -i ipaddress|grep 172|awk '{print $2}'|sed 's/"//'|sed 's/",//')
+  IPADDR=$(docker inspect $i|grep -i ipaddress|grep -v Second|grep -v '"IPAddress": ""'|awk '{print $2}'|sed 's/"//'|sed 's/",//')
 #  echo $IPADDR
 
   if [ ! $IPADDR ]; then

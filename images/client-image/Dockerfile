@@ -20,6 +20,9 @@
 
 FROM maven:3.6-jdk-8-slim AS builder
 
+RUN mkdir /root/.m2/
+COPY ./settings.xml /root/.m2/
+
 # Get UDF code and compile it
 COPY ./java/sql-training-udfs /opt/sql-udfs
 RUN cd /opt/sql-udfs; \
