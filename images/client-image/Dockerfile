@@ -60,3 +60,5 @@ COPY conf/* /opt/flink/conf/
 
 WORKDIR /opt/sql-client
 ENV SQL_CLIENT_HOME /opt/sql-client
+ENV PATH ${HADOOP_HOME}/bin/:$PATH
+

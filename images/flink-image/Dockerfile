@@ -49,8 +49,9 @@ ENV HADOOP_HOME=/opt/hadoop-${HADOOP_VERSION}
 ENV HADOOP_CONF_DIR=/etc/hadoop
 # COPY lib/hadoop-${HADOOP_VERSION}.tar.gz /
 COPY lib/* /
-RUN cat /hadoop-${HADOOP_VERSION}.tar.gz.* |tar -xzf - -C /opt && \
-        rm /hadoop-${HADOOP_VERSION}.tar.gz.* && \
+RUN cat /hadoop-${HADOOP_VERSION}.tar.gz.* |tar -xzf - -C / && \
+        tar -xzf /hadoop-${HADOOP_VERSION}.tar.gz -C /opt && \
+        rm /hadoop-${HADOOP_VERSION}.tar.gz* && \
         ln -s /opt/hadoop-${HADOOP_VERSION}/etc/hadoop /etc/hadoop
 ENV PATH ${HADOOP_HOME}/bin/:$PATH
 ADD bin/config.sh ${FLINK_HOME}/bin
