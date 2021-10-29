@@ -56,4 +56,4 @@ RUN cat /hadoop-${HADOOP_VERSION}.tar.gz.* |tar -xzf - -C / && \
 ENV PATH ${HADOOP_HOME}/bin/:$PATH
 ADD bin/config.sh ${FLINK_HOME}/bin
 ADD conf/hdp-conf/*.xml /opt/hadoop-${HADOOP_VERSION}/etc/hadoop/
-
+RUN apt update && apt install -y vim net-tools
