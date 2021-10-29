@@ -28,7 +28,7 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
   taskmanager:
-    image: fhueske/flink-sql-training-flink-s3:1.11.3-scala_2.11
+    image: wopeizl/sql-client:0.1
     build: ./images/flink-image
     container_name: taskmanager
     expose:
