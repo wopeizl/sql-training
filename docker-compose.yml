@@ -1,7 +1,7 @@
 version: '2.1'
 services:
   sql-client:
-    image: fhueske/flink-sql-training-client:2-FLINK-1.11-scala_2.11
+    image: wopeizl/sql-client:0.1
     build: ./images/client-image
     command: "java -classpath /opt/data/data-producer.jar com.ververica.sql_training.data_producer.TaxiRecordProducer --input file /opt/data --output kafka kafka:9092 --speedup 10.0"
     depends_on:
@@ -15,7 +15,7 @@ services:
       KAFKA_BOOTSTRAP: kafka
       MYSQL_HOST: mysql
   jobmanager:
-    image: fhueske/flink-sql-training-flink-s3:1.11.3-scala_2.11
+    image: wopeizl/flink1.11.3-yarn-embedded:0.1
     build: ./images/flink-image
     hostname: "jobmanager"
     expose:
@@ -75,3 +75,55 @@ services:
     ports:
       - "9000:9000"
       - "9001:9001"
+
+  namenode:
+    image: coomia/hadoop3.2-namenode:0.1
+    container_name: namenode
+    ports:
+      - 9870:9870
+      - 9100:9000
+    environment:
+      - CLUSTER_NAME=coomia-hdp-cluster
+    env_file:
+      - ./hadoop.env
+
+  datanode:
+    image: coomia/hadoop3.2-datanode:0.1
+    container_name: datanode
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    ports:
+      - "9864"
+    env_file:
+      - ./hadoop.env
+
+
+  hive-metastore:
+    image: coomia/hive3.1-hadoop3.2:0.1
+    container_name: hive-metastore
+    volumes:
+      - ./data/tools:/tools
+    env_file:
+      - ./hadoop.env
+    command: /opt/hive/bin/hive --service metastore
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 hive-metastore-pg:5432"
+    ports:
+      - "9083:9083"
+      
+  hive-metastore-pg:
+    image: coomia/hive3.1-metastore-pg:0.1
+    container_name: hive-metastore-pg
+    
+  hive-server:
+    image: coomia/hive3.1-hadoop3.2:0.1
+    container_name: hive-server
+    env_file:
+      - ./hadoop.env
+    environment:
+      HIVE_CORE_CONF_javax_jdo_option_ConnectionURL: "jdbc:postgresql://hive-metastore/metastore"
+      SERVICE_PRECONDITION: "hive-metastore:9083"
+    ports:
+      - "10000:10000"
+
+

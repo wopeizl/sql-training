@@ -159,6 +159,17 @@ functions:
   from: class
   class: com.ververica.sql_training.udfs.ToCoords
 
+catalogs:
+  - name: hive
+    type: hive
+    hive-conf-dir: /opt/hive-conf/
+    default-database: default
+  - name: iceberg
+    type: iceberg
+    warehouse: hdfs://namenode:9000/iceberg/warehouse/default/
+    uri: thrift://hive-metastore:9083
+    catalog-type: hive
+
 #==============================================================================
 # Execution properties
 #==============================================================================
