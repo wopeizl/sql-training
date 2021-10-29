@@ -28,7 +28,7 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
   taskmanager:
-    image: wopeizl/sql-client:0.1
+    image: wopeizl/flink1.11.3-yarn-embedded:0.1
     build: ./images/flink-image
     container_name: taskmanager
     expose:
@@ -121,7 +121,7 @@ services:
   hive-metastore-pg:
     image: coomia/hive3.1-metastore-pg:0.1
     container_name: hive-metastore-pg
-    
+
   hive-server:
     image: coomia/hive3.1-hadoop3.2:0.1
     container_name: hive-server
@@ -133,4 +133,4 @@ services:
     ports:
       - "10000:10000"
 
-
+    
