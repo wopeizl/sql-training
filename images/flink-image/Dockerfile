@@ -25,6 +25,24 @@ ARG FLINK_VERSION=1.11.3
 
 ADD VERSION .
 
+COPY sources.list /etc/apt/
+RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 3B4FE6ACC0B21F32
+RUN apt update && apt install -y vim net-tools procps
+
+ENV HADOOP_VERSION 3.2.2
+# ENV HADOOP_URL http://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz
+ENV HADOOP_HOME=/opt/hadoop-${HADOOP_VERSION}
+ENV HADOOP_CONF_DIR=/etc/hadoop
+# COPY lib/hadoop-${HADOOP_VERSION}.tar.gz /
+COPY lib/* /
+RUN cat /hadoop-${HADOOP_VERSION}.tar.gz.* |tar -xzf - -C / && \
+        tar -xzf /hadoop-${HADOOP_VERSION}.tar.gz -C /opt && \
+        rm /hadoop-${HADOOP_VERSION}.tar.gz* && \
+        ln -s /opt/hadoop-${HADOOP_VERSION}/etc/hadoop /etc/hadoop
+ENV PATH ${HADOOP_HOME}/bin/:$PATH
+ADD bin/config.sh ${FLINK_HOME}/bin
+ADD conf/hdp-conf/*.xml /opt/hadoop-${HADOOP_VERSION}/etc/hadoop/
+
 # move and download dependencies
 RUN mkdir /opt/flink/plugins/s3; \
     mv /opt/flink/opt/flink-s3-fs-hadoop-1.11.3.jar /opt/flink/plugins/s3; 
@@ -43,19 +61,4 @@ ADD 3rd-libs/*.jar ${FLINK_HOME}/lib/
 ADD conf/flink-conf/*.yaml  ${FLINK_HOME}/conf/
 ADD conf/hive-conf/*.xml  /opt/hive-conf/
         
-ENV HADOOP_VERSION 3.2.2
-# ENV HADOOP_URL http://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz
-ENV HADOOP_HOME=/opt/hadoop-${HADOOP_VERSION}
-ENV HADOOP_CONF_DIR=/etc/hadoop
-# COPY lib/hadoop-${HADOOP_VERSION}.tar.gz /
-COPY lib/* /
-RUN cat /hadoop-${HADOOP_VERSION}.tar.gz.* |tar -xzf - -C / && \
-        tar -xzf /hadoop-${HADOOP_VERSION}.tar.gz -C /opt && \
-        rm /hadoop-${HADOOP_VERSION}.tar.gz* && \
-        ln -s /opt/hadoop-${HADOOP_VERSION}/etc/hadoop /etc/hadoop
-ENV PATH ${HADOOP_HOME}/bin/:$PATH
-ADD bin/config.sh ${FLINK_HOME}/bin
-ADD conf/hdp-conf/*.xml /opt/hadoop-${HADOOP_VERSION}/etc/hadoop/
-COPY sources.list /etc/apt/
-RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 3B4FE6ACC0B21F32
-RUN apt update && apt install -y vim net-tools procps
+
