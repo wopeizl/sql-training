@@ -43,3 +43,8 @@ GROUP BY
 ----
 
 *Apache Flink, Flink®, Apache®, the squirrel logo, and the Apache feather logo are either registered trademarks or trademarks of The Apache Software Foundation.*
+
+# add reference to https://github.com/spancer/bigdata-docker-compose/
+# add reference to https://github.com/spancer/bigdata-docker-builds/
+ 
+
