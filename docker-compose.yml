@@ -72,6 +72,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
   minio:
     image: minio/minio:latest
     command: server /data --console-address ":9001"
