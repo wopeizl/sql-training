@@ -37,10 +37,9 @@ RUN cd /opt/data-producer; \
 # Build SQL Playground Image
 ###############################################################################
 
-# FROM flink:1.11.3-scala_2.11
-FROM wopeizl/flink1.11.3-yarn-embedded:0.1
+FROM wopeizl/flink1.12.1-yarn-embedded:0.1
 
-ARG FLINK_VERSION=1.11.3
+ARG FLINK_VERSION=1.12.1
 
 # Copy sql-client configuration
 COPY sql-client/ /opt/sql-client

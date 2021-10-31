@@ -18,10 +18,9 @@
 # Build Flink images with configured S3 plugin
 ###############################################################################
 
-#FROM flink:1.11.3-scala_2.11
-FROM flink:1.11.3-scala_2.12-java8
+FROM flink:1.12.1-scala_2.12-java8
 
-ARG FLINK_VERSION=1.11.3
+ARG FLINK_VERSION=1.12.1
 
 ADD VERSION .
 
@@ -45,7 +44,7 @@ ADD conf/hdp-conf/*.xml /opt/hadoop-${HADOOP_VERSION}/etc/hadoop/
 
 # move and download dependencies
 RUN mkdir /opt/flink/plugins/s3; \
-    mv /opt/flink/opt/flink-s3-fs-hadoop-1.11.3.jar /opt/flink/plugins/s3; 
+    mv /opt/flink/opt/flink-s3-fs-hadoop-1.12.1.jar /opt/flink/plugins/s3; 
 
 # adjust configuration
 RUN echo "s3.access-key: minio" >> /opt/flink/conf/flink-conf.yaml; \

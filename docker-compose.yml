@@ -1,7 +1,7 @@
 version: '2.1'
 services:
   sql-client:
-    image: wopeizl/sql-client:0.1
+    image: wopeizl/sql-client:0.2
     build: ./images/client-image
     container_name: sql-client
     command: "java -classpath /opt/data/data-producer.jar com.ververica.sql_training.data_producer.TaxiRecordProducer --input file /opt/data --output kafka kafka:9092 --speedup 10.0"
@@ -16,7 +16,7 @@ services:
       KAFKA_BOOTSTRAP: kafka
       MYSQL_HOST: mysql
   jobmanager:
-    image: wopeizl/flink1.11.3-yarn-embedded:0.1
+    image: wopeizl/flink1.12.1-yarn-embedded:0.1
     build: ./images/flink-image
     container_name: "jobmanager"
     hostname: "jobmanager"
@@ -28,7 +28,7 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
   taskmanager:
-    image: wopeizl/flink1.11.3-yarn-embedded:0.1
+    image: wopeizl/flink1.12.2-yarn-embedded:0.1
     build: ./images/flink-image
     container_name: taskmanager
     expose:
