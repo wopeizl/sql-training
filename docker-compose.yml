@@ -134,4 +134,30 @@ services:
     ports:
       - "10000:10000"
 
-    
+  postgres:
+    build: ./images/postgres-image
+    image: wopeizl/postgres:0.1
+    container_name: postgres
+      #  ports:
+      #   - 5432:5432
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+    volumes:
+     - ${PWD}/postgres-image:/docker-entrypoint-initdb.d
+ 
+  connect:
+    image: debezium/connect:1.2
+    container_name: connect
+    ports:
+     - 8083:8083
+    links:
+     - kafka
+     - postgres
+    environment:
+     - BOOTSTRAP_SERVERS=kafka:9092
+     - GROUP_ID=test-consumer-group
+     - CONFIG_STORAGE_TOPIC=my_connect_configs
+     - OFFSET_STORAGE_TOPIC=my_connect_offsets
+     - STATUS_STORAGE_TOPIC=my_connect_statuses
+     
