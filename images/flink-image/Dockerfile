@@ -59,5 +59,6 @@ ENV FLINK_HOME /opt/flink
 ADD 3rd-libs/*.jar ${FLINK_HOME}/lib/
 ADD conf/flink-conf/*.yaml  ${FLINK_HOME}/conf/
 ADD conf/hive-conf/*.xml  /opt/hive-conf/
+RUN apt install -y less
         
 

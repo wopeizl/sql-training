@@ -28,7 +28,7 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
   taskmanager:
-    image: wopeizl/flink1.12.2-yarn-embedded:0.1
+    image: wopeizl/flink1.12.1-yarn-embedded:0.1
     build: ./images/flink-image
     container_name: taskmanager
     expose:
