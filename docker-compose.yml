@@ -41,26 +41,33 @@ services:
       - jobmanager:jobmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
+
   zookeeper:
-    image: wurstmeister/zookeeper:3.4.6
+    image: debezium/zookeeper:1.2
     container_name: zookeeper
     ports:
-      - "2181:2181"
+     - 2181:2181
+     - 2888:2888
+     - 3888:3888
   kafka:
-    image: wurstmeister/kafka:2.12-2.2.1
+    image: debezium/kafka:1.2
     container_name: kafka
     ports:
-      - "9092:9092"
+     - 9092:9092
+    links:
+     - zookeeper
     depends_on:
       - zookeeper
     environment:
+      ZOOKEEPER_CONNECT: "zookeeper:2181"     
       KAFKA_ADVERTISED_HOST_NAME: "kafka"
       KAFKA_ADVERTISED_PORT: "9092"
       HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: "Rides:1:1, Fares:1:1, DriverChanges:1:1"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+     - /var/run/docker.sock:/var/run/docker.sock
+
   mysq1_data:
     image: mysql:8.0.19
     command: --default-authentication-plugin=mysql_native_password

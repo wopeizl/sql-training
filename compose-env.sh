@@ -19,4 +19,5 @@ do
 
 done;
 
+docker exec sql-client sed -iE 's/jobmanager.rpc.address:.*/jobmanager.rpc.address: jobmanager/g' /opt/flink/conf/flink-conf.yaml
 
